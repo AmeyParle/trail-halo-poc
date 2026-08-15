@@ -105,7 +105,7 @@ Existing records stay valid at *Recorded*. This is additive; nothing breaks.
 
 **Real.** `@trailprotocol/core@0.3.0` and `halo-record` are both from npm. The
 records are written by Halo's own `Recorder`, verified by its own `verifyLog`,
-and the signature checking is genuine Ed25519/JCS, not a mock. The input is hashed and a summary is retained, so sensitive arguments would need the redactor configured or they land in the log — `halo-record` stores a hash plus a redacted summary.
+and the signature checking is genuine Ed25519/JCS, not a mock. The input is hashed and a summary is retained, so sensitive arguments would need the redactor configured or they land in the log.
 
 **Still a proof of concept.** The tools are stubs; the demo is about the gate,
 not the tools. It isn't wired into Halo's agent adapters.
