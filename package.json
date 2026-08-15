@@ -1,11 +1,11 @@
 {
   "name": "halo-provable-authority",
   "version": "0.1.0",
-  "description": "Proof-of-concept: cryptographically provable principal authority for Halo records, using TRAIL reciprocal binding credentials.",
+  "description": "Proof-of-concept: cryptographically provable, org-signed agent authority recorded into a Halo chain.",
   "type": "module",
   "scripts": {
-    "demo": "node demo.mjs",
-    "agent-halo": "node agent-demo-halo.mjs"
+    "demo": "node agent-demo-halo.mjs",
+    "verify": "node verify-signatures.mjs"
   },
   "dependencies": {
     "@trailprotocol/core": "^0.3.0",
