@@ -130,7 +130,7 @@ a defence against an operator who controls everything.
 | | |
 |---|---|
 | `agent-demo-halo.mjs` | The demo — real agent, resolved keys, org-signed scope, signed records |
-| `verify-signatures.mjs` | Adversarial suite — tamper and wrong-key tests |
+| `verify-signatures.mjs` | Adversarial suite — six tamper mutations, wrong-key, and forged-scope-grant tests |
 | `audit.jsonl` | Written by the demo; inspect it |
 
 ---
