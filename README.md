@@ -27,9 +27,10 @@ are checked:
    the agent signs the reciprocal. Neither party can produce the pair alone —
    forging the relationship needs *both* private keys.
 2. **The tool is inside a scope grant the org signed.** Scope lives in a
-   `ScopeGrantCredential` signed by the org, checked for signature, subject and
-   validity window. Widening it requires the org's private key, not write access
-   to a config file.
+   `ScopeGrantCredential` signed by the org — and the grant's issuer is pinned
+   to the org DID, so a grant self-issued by the agent (or anyone else) is
+   rejected even if validly signed. Widening scope requires the *org's* private
+   key, not the agent's and not write access to a config file.
 3. **Every key is resolved from a DID document.** The verifier reads the
    verification method each proof names, confirms it's listed in
    `assertionMethod`, and takes the key from there — it is never handed a key it
@@ -85,7 +86,8 @@ Confirms untouched records verify, then that each of these fails:
 | Swap the principal | signature invalid |
 | Swap the agent ID | signature invalid |
 | Verify with a different key | invalid |
-| Forged scope grant (attacker self-signs a wider scope) | signature invalid |
+| Forged scope grant (unregistered attacker key) | signature invalid |
+| Scope grant self-issued by the agent (registered key, wrong issuer) | rejected — not issued by the bound org |
 
 ---
 

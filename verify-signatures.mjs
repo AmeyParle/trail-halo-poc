@@ -69,6 +69,8 @@ function verifyAuthority(tool, grant) {
   });
   if (!res.verified) return { proven:false, reason:"binding invalid" };
   const { proof, ...grantDoc } = grant;
+  if (grantDoc.issuer !== orgDid)
+    return { proven:false, reason:"scope grant not issued by the bound org" };
   if (!verifyProof(grantDoc, proof, resolveKey(grantDoc.issuer, proof.verificationMethod)))
     return { proven:false, reason:"scope grant signature invalid" };
   if (grantDoc.credentialSubject.id !== agentDid)
@@ -158,5 +160,17 @@ const forged = issueScopeGrant(["search_docs","get_weather","delete_database"],
 const r = verifyAuthority("delete_database", forged);
 line("attacker self-signs a wider scope", r.proven, false);
 console.log(`  reason: ${r.reason}`);
+
+const selfDoc = {
+  "@context":["https://www.w3.org/ns/credentials/v2","https://trailprotocol.org/ns/credentials/v1"],
+  type:["VerifiableCredential","ScopeGrantCredential"],
+  issuer: agentDid, validFrom, validUntil,
+  credentialSubject:{ id: agentDid, authorizedTools:["search_docs","get_weather","delete_database"] },
+};
+const selfGrant = { ...selfDoc, proof: createProof(selfDoc, agentKeys.privateKeyBytes,
+  `${agentDid}#key-1`, "assertionMethod") };
+const rSelf = verifyAuthority("delete_database", selfGrant);
+line("agent self-issues a wider scope (issuer=agent)", rSelf.proven, false);
+console.log(`  reason: ${rSelf.reason}`);
 
 console.log("\nDone.\n");

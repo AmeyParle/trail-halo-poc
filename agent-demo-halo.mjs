@@ -108,6 +108,8 @@ function verifyAuthority(toolName, bind, grant) {
   if (!res.verified) return { proven: false, reason: "binding invalid: " + res.errors.join("; ") };
 
   const { proof, ...grantDoc } = grant;
+  if (grantDoc.issuer !== orgDid)
+    return { proven: false, reason: "scope grant not issued by the bound org" };
   const issuerKey = resolveKey(grantDoc.issuer, proof.verificationMethod);
   if (!verifyProof(grantDoc, proof, issuerKey))
     return { proven: false, reason: "scope grant signature invalid" };
